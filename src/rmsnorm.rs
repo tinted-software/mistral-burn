@@ -11,7 +11,7 @@ pub struct RMSNormalization<B: Backend> {
 
 impl<B: Backend> RMSNormalization<B> {
     pub fn forward<const D: usize>(&self, tensor: Tensor<B, D>) -> Tensor<B, D> {
-        let rms = (tensor.clone().powf(2.0).mean_dim(D - 1) + NORM_EPS).sqrt();
+        let rms = (tensor.clone().powf_scalar(2.0).mean_dim(D - 1) + NORM_EPS).sqrt();
 
         tensor.div(rms) * self.weights.val().unsqueeze()
     }

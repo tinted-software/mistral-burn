@@ -12,10 +12,10 @@ pub fn precompute_freqs_cis<B: Backend>(dim: usize, end: usize) -> Tensor<B, 3> 
     const THETA: f64 = 10000.0;
 
     let freqs: Tensor<B, 1> =
-        Tensor::arange_step(0..(dim - 1), 2, &Default::default()).float() / (dim as f64);
+        Tensor::arange_step(0..(dim - 1) as i64, 2, &Default::default()).float() / (dim as f64);
     let freqs = (freqs * THETA.ln() * -1.).exp(); // workaround of THETA to the power of the freqs
 
-    let t = Tensor::arange(0..end, &Default::default()).float();
+    let t = Tensor::arange(0..end as i64, &Default::default()).float();
     let freqs = outer_product(t, freqs);
 
     // torch.polar workaround by increasing the rank and having one dimension for cosines and one for sines
